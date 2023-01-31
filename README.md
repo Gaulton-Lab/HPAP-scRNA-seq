@@ -1,5 +1,5 @@
-# HPAP Clustering
-Here you can find all the pipelines used to generate data and figures in our manuscript using publically available pancreatic islet scRNA-seq data from the Human Pancreas Analysis Program (HPAP).
+# HPAP scRNA-seq Analysis Pipeline
+Here you can find all the code used to generate data and figures in our manuscript using publically available pancreatic islet scRNA-seq data from the Human Pancreas Analysis Program (HPAP).
 
 #### Elgamal RM et al. A reference map of cell type-specific gene expression in pancreatic islets in physiology and disease. 2023
 
