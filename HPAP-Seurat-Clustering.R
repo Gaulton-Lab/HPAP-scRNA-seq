@@ -136,7 +136,7 @@ Running under: Ubuntu 20.04.2 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-LAPACK: /home/rlmelton/.conda/envs/reticulate/lib/libmkl_rt.so.1
+LAPACK: ~/.conda/envs/reticulate/lib/libmkl_rt.so.1
 
 locale:
  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
