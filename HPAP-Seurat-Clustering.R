@@ -22,7 +22,9 @@ Sys.setenv(RETICULATE_PYTHON="~/.conda/envs/reticulate/bin/python")
 reticulate::use_python("~/.conda/envs/reticulate/bin/python")
 reticulate::use_condaenv("~/.conda/envs/reticulate")
 reticulate::py_module_available(module='leidenalg')
-reticulate::import('leidenalg') 
+reticulate::import('leidenalg')
+
+####################################################################################################################################################################
 
 #Run CellRanger on all individual samples, aligning to GRCh38 genome 
 #!/bin/bash
