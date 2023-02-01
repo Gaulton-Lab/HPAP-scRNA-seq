@@ -1,6 +1,7 @@
 #Note, perform this script after running SoupX to ensure use of counts corrected for ambient RNA
 ##Failure to account for ambient RNA can result in false positive identification of doublets
 
+#Load necessary packages
 suppressMessages(library(hdf5r))
 suppressMessages(library(Seurat))
 suppressMessages(library(Signac))
@@ -17,7 +18,7 @@ suppressMessages(library(plyr))
 suppressMessages(library(enrichR))
 suppressMessages(library(stringr))
 suppressMessages(library(ggrepel))
-suppressMessages(library(reticulate))
+suppressMessages(library(reticulate)) #Must load reticulate to run Python scripts in R
 
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 
