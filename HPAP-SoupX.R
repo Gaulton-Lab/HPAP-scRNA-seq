@@ -81,6 +81,64 @@ for (x in wd){
     saveRDS(data2, file = sprintf("~/hpap/SoupX/%s_SoupX.rds",name))
     }
 
+#Create a merged Seurat object from the individual sample post-SoupX Seurat objects
+setwd('~/hpap/SoupX/')
+soupx_files <- list.files('/~/hpap/SoupX/', pattern='_SoupX.rds')
+soupx_data <- list()
+
+for (x in soupx_files){
+    sample_name <- str_split_fixed(x, "_", n=4)[2]
+    tmp <- readRDS(x)
+    soupx_data[[sample_name]] <- tmp
+}
+
+soupx_merged_data <- merge(soupx_data[[samples[[1]]]], y=soupx_data[samples[2:length(samples)]], add.cell.ids=samples, project='HPAP')
+soupx_merged_data$library <- substr(rownames(soupx_merged_data@meta.data),1,8)
+
+#Add meta data to merged object
+##Note that donor metadata files can be downloaded directly from PANC-DB with account registration
+cond_t1d <- c('HPAP-020','HPAP-021','HPAP-023','HPAP-028','HPAP-032','HPAP-055','HPAP-064','HPAP-071','HPAP-084','HPAP-087')
+cond_t2d <- c('HPAP-051','HPAP-057','HPAP-058','HPAP-061','HPAP-065','HPAP-070','HPAP-079','HPAP-081','HPAP-083','HPAP-085','HPAP-088','HPAP-090','HPAP-091','HPAP-100','HPAP-106','HPAP-108', 'HPAP-109')
+aab <- c('HPAP-019', 'HPAP-024', 'HPAP-029', 'HPAP-038', 'HPAP-043', 'HPAP-045', 'HPAP-049', 'HPAP-050', 'HPAP-072', 'HPAP-092', 'HPAP-107')
+sex_F <- c('HPAP-022','HPAP-027','HPAP-036', 'HPAP-037','HPAP-039','HPAP-044','HPAP-045','HPAP-050','HPAP-051','HPAP-053','HPAP-054', 'HPAP-056','HPAP-057','HPAP-058','HPAP-061','HPAP-063', 'HPAP-074', 'HPAP-079','HPAP-081','HPAP-085','HPAP-090','HPAP-091','HPAP-093','HPAP-099','HPAP-101','HPAP-103','HPAP-105', 'HPAP-109')
+penn <- c('HPAP-022','HPAP-027','HPAP-034','HPAP-035','HPAP-037','HPAP-040','HPAP-047','HPAP-051','HPAP-052','HPAP-053','HPAP-054','HPAP-055','HPAP-056','HPAP-057','HPAP-059','HPAP-061','HPAP-063','HPAP-064','HPAP-074','HPAP-075','HPAP-077','HPAP-083','HPAP-085','HPAP-099','HPAP-103','HPAP-104','HPAP-106')
+v2 <- c('HPAP-019','HPAP-020','HPAP-021','HPAP-022','HPAP-023','HPAP-024','HPAP-026','HPAP-027','HPAP-028','HPAP-029','HPAP-032','HPAP-034','HPAP-035','HPAP-036','HPAP-037')
+
+soupx_merged_data@meta.data$sex[soupx_merged_data@meta.data$library %in% sex_F] <- 'F'
+soupx_merged_data@meta.data$sex[!soupx_merged_data@meta.data$library %in% sex_F] <- 'M'
+soupx_merged_data@meta.data$condition <- 'ND'
+soupx_merged_data@meta.data$condition[soupx_merged_data@meta.data$library %in% cond_t1d] <- 'T1D'
+soupx_merged_data@meta.data$condition[soupx_merged_data@meta.data$library %in% cond_t2d] <- 'T2D'
+
+soupx_merged_data@meta.data$condition2 <- soupx_merged_data@meta.data$condition
+soupx_merged_data@meta.data$condition2[soupx_merged_data@meta.data$library %in% aab] <- "AAB+"
+
+soupx_merged_data@meta.data$tissue_source <- 'nPod'
+soupx_merged_data@meta.data$tissue_source[soupx_merged_data@meta.data$library %in% penn] <- "UPenn"
+
+soupx_merged_data@meta.data$chemistry <- '10Xv3'
+soupx_merged_data@meta.data$chemistry[soupx_merged_data@meta.data$library %in% v2] <- "10Xv2"
+
+soupx_merged_data[["percent.mt"]] <- PercentageFeatureSet(soupx_merged_data, pattern = "^MT-")
+
+#Set percent mitochondrial read threshold, log normalize data and find variable features
+soupx_merged_data <- subset(soupx_merged_data, subset = percent.mt < 15) #Keeping everything less than 15 percent mitochondrial reads
+soupx_merged_data <- NormalizeData(soupx_merged_data, normalization.method = 'LogNormalize', scale.factor = 10000)
+soupx_merged_data <- FindVariableFeatures(soupx_merged_data, selection.method = "vst", nfeatures = 2000)
+soupx_merged_data <- ScaleData(soupx_merged_data, verbose = FALSE) %>% 
+    RunPCA(pc.genes = soupx_merged_data@var.genes, npcs = 20, verbose = FALSE)
+
+#Run Harmony batch correction for donor ID, tissue source, and 10x kit chemistry
+soupx_merged_data <- RunHarmony(soupx_merged_data,c('library', 'tissue_source', 'chemistry'), assay.use='RNA', plot_convergence = TRUE)
+
+#Dimensional reduction and finding clusters
+soupx_merged_data <- soupx_merged_data %>% 
+    RunUMAP(reduction = 'harmony', dims = 1:20) %>% 
+    FindNeighbors(reduction = 'harmony', dims = 1:20) %>% 
+    FindClusters(algorithm=4,resolution = 0.5 ,method = 'igraph') #Algorithm 4 is Leiden
+
+saveRDS(soupx_merged_data, '~/hpap/SoupX/hpap_SoupX.rds')
+
 ####################################################################################################################################################################
 sessionInfo()
 R version 4.1.1 (2021-08-10)
