@@ -1,4 +1,4 @@
-#This script will go over how to process and cluster your final Seurat object after performing SoupX and Scrublet
+###This script will go over how to process and cluster your final Seurat object after performing SoupX and Scrublet
 
 #Load necessary packages
 suppressMessages(library(hdf5r))
