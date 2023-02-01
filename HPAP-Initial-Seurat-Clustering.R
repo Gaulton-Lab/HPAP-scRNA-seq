@@ -104,7 +104,7 @@ merged_data <- RunHarmony(merged_data,c('library','tissue_source','chemistry'), 
 merged_data <- merged_data %>% 
     RunUMAP(reduction = "harmony", dims = 1:20) %>% 
     FindNeighbors(reduction = "harmony", dims = 1:20) %>% 
-    FindClusters(algorithm=4,resolution = 0.5 ,method = "igraph") #Algorithm 4 is Leiden
+    FindClusters(algorithm=4,resolution = 0.5 ,method = "igraph") #Algorithm 4 is Leiden clustering
 
 #Plot UMAP
 options(repr.plot.height = 7, repr.plot.width = 8)
