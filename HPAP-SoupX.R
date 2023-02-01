@@ -78,7 +78,7 @@ for (x in wd){
     data2 <- RunUMAP(data2, dims = 1:30, verbose = FALSE)
     data2 <- FindNeighbors(data2, dims = 1:30, verbose = FALSE)
     data2 <- FindClusters(data2, algorithm=4, resolution = 1, verbose=FALSE)
-    saveRDS(data2, file = sprintf("~/hpap/SoupX/%s_SoupX_roundToInt.rds",name))
+    saveRDS(data2, file = sprintf("~/hpap/SoupX/%s_SoupX.rds",name))
     }
 
 ####################################################################################################################################################################
