@@ -119,28 +119,42 @@ write.table(fin_scrub_df[,c(1,2,3)],'~/hpap/Scrublet/hpap_combined_scrublet_pred
 
 ###It's time to remove doublets from our Seurat object!
 #Read in post-SoupX merged Seurat object
-data <- readRDS('~/hpap/SoupX/hpap_SoupX.rds')
+soupx_merged_data <- readRDS('~/hpap/SoupX/hpap_SoupX.rds')
 
 #Read in Scrublet doublets
 scrub <- read.table('~/hpap/Scrublet/hpap_combined_scrublet_predicted_doublets.txt')
 scrub_doublets <- scrub[scrub$V2=='True',1]
 
 #Create vector of assignments with barcode names
-cells <- Cells(data)
-scrublet_metadata <- rep('singleton', length(cells))
+cells <- Cells(soupx_merged_data)
+scrublet_metadata <- rep('Singleton', length(cells))
 names(scrublet_metadata) <- cells
-scrublet_metadata[scrub_doublets] <- 'doublet'
+scrublet_metadata[scrub_doublets] <- 'Doublet'
 table(scrublet_metadata)
 head(names(scrublet_metadata))
 
 #Add doublet calls as metadata column
-data <- AddMetaData(data, scrublet_metadata, col.name='scrublet')
+soupx_merged_data <- AddMetaData(soupx_merged_data, scrublet_metadata, col.name='Scrublet')
 
 #Subset non-doublets (singletons)
-data <- subset(data, subset=scrublet=='singleton')
+soupx_merged_data <- subset(soupx_merged_data, subset=scrublet=='Singleton')
+
+#Since we removed barcodes, it's important to re-run batch correction, dimensional reduction, and finding clusters
+soupx_scrublet_merged <- soupx_merged_data
+soupx_scrublet_merged <- NormalizeData(soupx_scrublet_merged, normalization.method = 'LogNormalize', scale.factor = 10000)
+soupx_scrublet_merged <- FindVariableFeatures(soupx_scrublet_merged, selection.method = 'vst', nfeatures = 2000)
+soupx_scrublet_merged <- ScaleData(soupx_scrublet_merged, verbose = FALSE) %>% 
+    RunPCA(pc.genes = soupx_scrublet_merged@var.genes, npcs = 20, verbose = FALSE)
+
+soupx_scrublet_merged <- RunHarmony(soupx_scrublet_merged,c('library', 'tissue_source', 'chemistry'), assay.use='RNA', plot_convergence = FALSE)
+
+soupx_scrublet_merged <- soupx_scrublet_merged %>% 
+    RunUMAP(reduction = 'harmony', dims = 1:20) %>% 
+    FindNeighbors(reduction = 'harmony', dims = 1:20) %>% 
+    FindClusters(algorithm=4,resolution = 0.5 ,method = "igraph") #Algorithm 4 is Leiden clustering
 
 #Save post-Scrublet Seurat object
-saveRDS(data, '~/hpap/hpap_SoupX_Scrublet.rds')
+saveRDS(soupx_scrublet_merged, '~/hpap/hpap_SoupX_Scrublet.rds')
 
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 sessionInfo()
