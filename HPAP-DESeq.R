@@ -124,7 +124,7 @@ raw_counts <- subset(raw_counts ,rownames(raw_counts) %in% fin.gene.info$gene_na
 gene_sizes <- fin.gene.info$exonic.gene.sizes[match(rownames(raw_counts), fin.gene.info$gene_name )]
 
 tpm_mat <- make_tpm(raw_counts, gene_sizes)
-write.table(tpm_mat, paste0('~/hpap/deseq/', cell , '_TPMpersample.txt'), sep='\t', quote=FALSE)
+write.table(tpm_mat, paste0('~/hpap/deseq/', cell , '_TPM_per_sample.txt'), sep='\t', quote=FALSE)
     }
 
 ###Step 3: Run DESeq###
