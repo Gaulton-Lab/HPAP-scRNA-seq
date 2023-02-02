@@ -71,9 +71,7 @@ p1
 marker.genes <- c('INS', 'GCG')
 
 options(repr.plot.width=25, repr.plot.height=12)
-p1 <- DotPlot(data_subset, assay='RNA', group.by='sub.cluster', features=marker.genes, cluster.idents=TRUE) 
-p1 <- p1 + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
-p1
+DotPlot(data_subset, assay='RNA', group.by='sub.cluster', features=marker.genes, cluster.idents=TRUE) + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
 
 #If you are happy with subclustering, add to object metadata
 ###For first subcluster:
@@ -141,9 +139,7 @@ marker.genes <- c('INS','IAPP', #Beta
                   'CD69','C1QB', 'C1QC', 'C1QA', #Immune (Macrophages),
                   'MKI67','CDK1') #Dividing cells
 options(repr.plot.width=12, repr.plot.height=6)
-p1 <- DotPlot(data, assay='RNA', features=marker.genes, cluster.idents=TRUE) 
-p1 <- p1 + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
-p1
+DotPlot(data, assay='RNA', features=marker.genes, cluster.idents=TRUE) + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
 
 #Be sure to save your final Seurat object!
 saveRDS(data, '~/hpap/hpap_islet_scRNAseq.rds')
