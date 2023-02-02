@@ -46,12 +46,10 @@ for (x in wd){
     hpap <- CreateSeuratObject(counts = hpap.data, project = "HPAP", min.cells = 0, min.features = 500)
     data[[sample_name]] <- hpap   
 }
-data
 
 #Merge Seurat objects for individual samples
 merged_data <- merge(data[[samples[[1]]]], y=data[samples[2:length(samples)]], add.cell.ids=samples, project='HPAP')
 merged_data$library <- substr(rownames(merged_data@meta.data),1,8)
-merged_data
 
 #Add meta data to merged object
 ##Note that donor metadata files can be downloaded directly from PANC-DB with account registration
@@ -81,9 +79,7 @@ merged_data[['percent.mt']] <- PercentageFeatureSet(merged_data, pattern = '^MT-
 #Density plot can be generated to help determine a percent mitochondrial read threshold to set
 quants <- quantile(merged_data@meta.data[,'percent.mt'])
 quants
-p <- ggplot(merged_data@meta.data, aes(x=percent.mt)) + 
-  geom_density() + theme_classic()
-p + geom_vline(xintercept=c(quants[2],quants[3],quants[4]), colour=c('blue', 'red', 'black'),linetype = 'longdash')
+ggplot(merged_data@meta.data, aes(x=percent.mt)) + geom_density() + theme_classic() + geom_vline(xintercept=c(quants[2],quants[3],quants[4]), colour=c('blue', 'red', 'black'),linetype = 'longdash')
 
 #Visualize QC metrics *Note that HPAP-027 and HPAP-093 were removed from downstream analyses since mean nFeatures < 1000
 options(repr.plot.height = 20, repr.plot.width = 30)
@@ -123,10 +119,9 @@ marker.genes <- c('INS','IAPP', #Beta
                   'KIT', #Mast
                   'CD69','C1QB', 'C1QC', 'C1QA', #Immune (Macrophages),
                   'MKI67','CDK1') #Dividing cells
+
 options(repr.plot.width=12, repr.plot.height=6)
-p1 <- DotPlot(merged_data, assay='RNA', features=marker.genes, cluster.idents=TRUE) 
-p1 <- p1 + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
-p1
+DotPlot(merged_data, assay='RNA', features=marker.genes, cluster.idents=TRUE) + theme(axis.text.x=element_text(angle=45, hjust=1)) + xlab('') + ylab('')
 
 #Congratulations- you've completed basic clustering of the HPAP dataset!
 
