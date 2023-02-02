@@ -108,24 +108,24 @@ files <- list.files(dir, pattern ='sample_gex_total_counts.txt')
 cells <- gsub('_sample_gex_total_counts.txt','', files)
 
 make_tpm <- function(raw_counts, gene_sizes){
-rpk <- raw_counts / gene_sizes
-tpm <- rpk
-for (i in 1:ncol(rpk)){
-    tpm[,i] <- rpk[,i]/(sum(rpk[,i])/1e6)
-}
+    rpk <- raw_counts / gene_sizes
+    tpm <- rpk
+    for (i in 1:ncol(rpk)){
+        tpm[,i] <- rpk[,i]/(sum(rpk[,i])/1e6)
+    }
     return(tpm)
 }
 
 for (x in files){
-cell <- cells[which(files == x)]
-raw_counts <- read.table(paste0(dir, x), row.names=1)
+    cell <- cells[which(files == x)]
+    raw_counts <- read.table(paste0(dir, x), row.names=1)
 
-raw_counts <- subset(raw_counts ,rownames(raw_counts) %in% fin.gene.info$gene_name)
-gene_sizes <- fin.gene.info$exonic.gene.sizes[match(rownames(raw_counts), fin.gene.info$gene_name )]
+    raw_counts <- subset(raw_counts ,rownames(raw_counts) %in% fin.gene.info$gene_name)
+    gene_sizes <- fin.gene.info$exonic.gene.sizes[match(rownames(raw_counts), fin.gene.info$gene_name )]
 
-tpm_mat <- make_tpm(raw_counts, gene_sizes)
-write.table(tpm_mat, paste0('~/hpap/deseq/', cell , '_TPM_per_sample.txt'), sep='\t', quote=FALSE)
-    }
+    tpm_mat <- make_tpm(raw_counts, gene_sizes)
+    write.table(tpm_mat, paste0('~/hpap/deseq/', cell , '_TPM_per_sample.txt'), sep='\t', quote=FALSE)
+}
 
 ###Step 3: Run DESeq###
 meta <- read.csv('~/hpap/Donor_Summary_127.csv') #This file can be downloaded from PANC-DB
@@ -179,43 +179,43 @@ for (x in files) {
     #The  next few lines of code subset the count matrix to only include genes where at least half the samples per condition have greater than 5 counts
     ##Genes must meet this criteria in both conditions (see intersect below). This helps avoid significance due to one condition largely having 0 counts
     nd_genes_to_keep <- c()
-    for (i in 1:nrow(nd_raw_counts)) {
-      if (sum(nd_raw_counts[i, ] >= 5) >= n_nd) {
-        nd_genes_to_keep <- c(nd_genes_to_keep, rownames(nd_raw_counts[i, ]))
-      }
-    }
+        for (i in 1:nrow(nd_raw_counts)) {
+          if (sum(nd_raw_counts[i, ] >= 5) >= n_nd) {
+            nd_genes_to_keep <- c(nd_genes_to_keep, rownames(nd_raw_counts[i, ]))
+          }
+        }
 
     t1d_genes_to_keep <- c()
-    for (i in 1:nrow(t1d_raw_counts)) {
-      if (sum(t1d_raw_counts[i, ] >= 5) >= n_t1d) {
-        t1d_genes_to_keep <- c(t1d_genes_to_keep, rownames(t1d_raw_counts[i, ]))
-      }
-    }
+        for (i in 1:nrow(t1d_raw_counts)) {
+          if (sum(t1d_raw_counts[i, ] >= 5) >= n_t1d) {
+            t1d_genes_to_keep <- c(t1d_genes_to_keep, rownames(t1d_raw_counts[i, ]))
+          }
+        }
 
     nd_t1d <- intersect(nd_genes_to_keep, t1d_genes_to_keep)
 
-    if ('T1D' %in% data@meta.data$condition){
-        print(cell)
-        print('All conditions found!')
-        counts <- raw_counts[which(rownames(raw_counts) %in% nd_t1d),] #Subsets full count matrix to only genes that met our filtering criteria
+        if ('T1D' %in% data@meta.data$condition){
+            print(cell)
+            print('All conditions found!')
+            counts <- raw_counts[which(rownames(raw_counts) %in% nd_t1d),] #Subsets full count matrix to only genes that met our filtering criteria
 
-        my_design <- as.formula ('~ condition + scaled_bmi + sex + scaled_age_years + chemistry + tissue_source')
-        dds <- DESeqDataSetFromMatrix(round(counts), colData = meta_cell, design = my_design) #colData is where design columns are found
-        dds <- estimateSizeFactors(dds)
-        dds <- estimateDispersions(dds)
+            my_design <- as.formula ('~ condition + scaled_bmi + sex + scaled_age_years + chemistry + tissue_source')
+            dds <- DESeqDataSetFromMatrix(round(counts), colData = meta_cell, design = my_design) #colData is where design columns are found
+            dds <- estimateSizeFactors(dds)
+            dds <- estimateDispersions(dds)
 
-        ### Pairwise Wald test: conditon vs control  
-        dds <- nbinomWaldTest(dds)
-        tests <- c('T1D') #Conditions to test compared to control
-        for (y in tests){
-            res <- results(dds, contrast=c('condition',y,'ND'))
-            res <- as.data.frame(res)
-            res <- res[order(res$pvalue),]
-            outfile <- paste0( cell, '.deseq.WaldTest.', y , '.tsv')
-            write.table(res,paste0('~/hpap/deseq/results/', outfile) , sep='\t', quote=FALSE)           
-        }     
-            }
-                } 
+            ### Pairwise Wald test: conditon vs control  
+            dds <- nbinomWaldTest(dds)
+            tests <- c('T1D') #Conditions to test compared to control
+                for (y in tests){
+                    res <- results(dds, contrast=c('condition',y,'ND'))
+                    res <- as.data.frame(res)
+                    res <- res[order(res$pvalue),]
+                    outfile <- paste0( cell, '.deseq.WaldTest.', y , '.tsv')
+                    write.table(res,paste0('~/hpap/deseq/results/', outfile) , sep='\t', quote=FALSE)           
+                }     
+        }
+} 
 
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 sessionInfo()
