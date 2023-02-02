@@ -28,19 +28,19 @@ samples <- c('HPAP-019','HPAP-020','HPAP-021','HPAP-022','HPAP-023','HPAP-024','
 ##Note that counts are now SoupX corrected
 for (sample in samples){    
     #Read in post-SoupX Seurat objects
-    data <- readRDS(file = paste0("~/hpap/SoupX/", sample, "_SoupX_roundToInt.rds"))
+    data <- readRDS(file = paste0('~/hpap/SoupX/', sample, '_SoupX_roundToInt.rds'))
   
     DefaultAssay(data) <- 'RNA'
     rna_counts <- GetAssayData(adata,slot='counts')
-    mm <- paste0("~/hpap/Scrublet/",sample,'_count_matrix_roundToInt.mtx')
+    mm <- paste0('~/hpap/Scrublet/',sample,'_count_matrix_roundToInt.mtx')
     writeMM(rna_counts,mm)
     
     #Export gene list
-    genes <- paste0("~/hpap/Scrublet/",sample,'_genes_roundToInt.tsv')
+    genes <- paste0('~/hpap/Scrublet/',sample,'_genes_roundToInt.tsv')
     write(row.names(rna_counts),genes,sep='\n')
 
     #Export barcode list
-    barcodes <- paste0("~/hpap/Scrublet/",sample,'_barcodes_roundToInt.tsv')
+    barcodes <- paste0('~/hpap/Scrublet/',sample,'_barcodes_roundToInt.tsv')
     write(colnames(rna_counts),barcodes,sep='\n')
 }
 
@@ -164,7 +164,7 @@ Running under: Ubuntu 20.04.2 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+LAPACK: ~/.conda/envs/reticulate/lib/libmkl_rt.so.1
 
 locale:
  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -179,17 +179,21 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] ggrepel_0.9.2             stringr_1.5.0            
- [3] enrichR_3.1               plyr_1.8.8               
- [5] tictoc_1.1                future_1.30.0            
- [7] ggpubr_0.5.0              data.table_1.14.6        
- [9] harmony_0.1.1             Rcpp_1.0.10              
-[11] Matrix_1.5-1              ggplot2_3.4.0            
-[13] dplyr_1.0.10              EnsDb.Hsapiens.v86_2.99.0
-[15] ensembldb_2.18.4          AnnotationFilter_1.18.0  
-[17] GenomicFeatures_1.46.5    AnnotationDbi_1.56.2     
-[19] Biobase_2.54.0            GenomicRanges_1.46.1     
-[21] GenomeInfoDb_1.30.1       IRanges_2.28.0           
-[23] S4Vectors_0.32.4          BiocGenerics_0.40.0      
-[25] Signac_1.7.0              SeuratObject_4.1.3       
-[27] Seurat_4.3.0              hdf5r_1.3.8              
+ [1] Azimuth_0.4.6             shinyBS_0.61.1           
+ [3] SoupX_1.6.1               reticulate_1.27          
+ [5] patchwork_1.1.2           forcats_0.5.2            
+ [7] stringr_1.5.0             purrr_1.0.1              
+ [9] readr_2.1.2               tidyr_1.3.0              
+[11] tibble_3.1.8              tidyverse_1.3.2          
+[13] future_1.30.0             ggpubr_0.5.0             
+[15] data.table_1.14.6         harmony_0.1.1            
+[17] Rcpp_1.0.10               Matrix_1.5-1             
+[19] ggplot2_3.4.0             dplyr_1.0.10             
+[21] EnsDb.Hsapiens.v86_2.99.0 ensembldb_2.18.4         
+[23] AnnotationFilter_1.18.0   GenomicFeatures_1.46.5   
+[25] AnnotationDbi_1.56.2      Biobase_2.54.0           
+[27] GenomicRanges_1.46.1      GenomeInfoDb_1.30.1      
+[29] IRanges_2.28.0            S4Vectors_0.32.4         
+[31] BiocGenerics_0.40.0       Signac_1.7.0             
+[33] SeuratObject_4.1.3        Seurat_4.3.0             
+[35] hdf5r_1.3.8              
