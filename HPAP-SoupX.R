@@ -70,7 +70,7 @@ for (x in wd){
 
     data2 <- CreateSeuratObject(out)
     data2[['percent.mt']] <- PercentageFeatureSet(data2, pattern = '^MT-')
-    data2 <- NormalizeData(data2, normalization.method = "LogNormalize", scale.factor = 10000)
+    data2 <- NormalizeData(data2, normalization.method = 'LogNormalize', scale.factor = 10000)
     data2 <- FindVariableFeatures(data2, selection.method = "vst", nfeatures = 2000)
     all.genes <- rownames(data2)
     data2 <- ScaleData(data2, features = all.genes)
@@ -78,8 +78,8 @@ for (x in wd){
     data2 <- RunUMAP(data2, dims = 1:30, verbose = FALSE)
     data2 <- FindNeighbors(data2, dims = 1:30, verbose = FALSE)
     data2 <- FindClusters(data2, algorithm=4, resolution = 1, verbose=FALSE)
-    saveRDS(data2, file = sprintf("~/hpap/SoupX/%s_SoupX.rds",name))
-    }
+    saveRDS(data2, file = sprintf('~/hpap/SoupX/%s_SoupX.rds',name))
+}
 
 #Create a merged Seurat object from the individual sample post-SoupX Seurat objects
 setwd('~/hpap/SoupX/')
@@ -87,7 +87,7 @@ soupx_files <- list.files('/~/hpap/SoupX/', pattern='_SoupX.rds')
 soupx_data <- list()
 
 for (x in soupx_files){
-    sample_name <- str_split_fixed(x, "_", n=4)[2]
+    sample_name <- str_split_fixed(x, '_', n=4)[2]
     tmp <- readRDS(x)
     soupx_data[[sample_name]] <- tmp
 }
@@ -111,20 +111,20 @@ soupx_merged_data@meta.data$condition[soupx_merged_data@meta.data$library %in% c
 soupx_merged_data@meta.data$condition[soupx_merged_data@meta.data$library %in% cond_t2d] <- 'T2D'
 
 soupx_merged_data@meta.data$condition2 <- soupx_merged_data@meta.data$condition
-soupx_merged_data@meta.data$condition2[soupx_merged_data@meta.data$library %in% aab] <- "AAB+"
+soupx_merged_data@meta.data$condition2[soupx_merged_data@meta.data$library %in% aab] <- 'AAB+'
 
 soupx_merged_data@meta.data$tissue_source <- 'nPod'
-soupx_merged_data@meta.data$tissue_source[soupx_merged_data@meta.data$library %in% penn] <- "UPenn"
+soupx_merged_data@meta.data$tissue_source[soupx_merged_data@meta.data$library %in% penn] <- 'UPenn'
 
 soupx_merged_data@meta.data$chemistry <- '10Xv3'
-soupx_merged_data@meta.data$chemistry[soupx_merged_data@meta.data$library %in% v2] <- "10Xv2"
+soupx_merged_data@meta.data$chemistry[soupx_merged_data@meta.data$library %in% v2] <- '10Xv2'
 
-soupx_merged_data[["percent.mt"]] <- PercentageFeatureSet(soupx_merged_data, pattern = "^MT-")
+soupx_merged_data[["percent.mt"]] <- PercentageFeatureSet(soupx_merged_data, pattern = '^MT-')
 
 #Set percent mitochondrial read threshold, log normalize data and find variable features
 soupx_merged_data <- subset(soupx_merged_data, subset = percent.mt < 15) #Keeping everything less than 15 percent mitochondrial reads
 soupx_merged_data <- NormalizeData(soupx_merged_data, normalization.method = 'LogNormalize', scale.factor = 10000)
-soupx_merged_data <- FindVariableFeatures(soupx_merged_data, selection.method = "vst", nfeatures = 2000)
+soupx_merged_data <- FindVariableFeatures(soupx_merged_data, selection.method = 'vst', nfeatures = 2000)
 soupx_merged_data <- ScaleData(soupx_merged_data, verbose = FALSE) %>% 
     RunPCA(pc.genes = soupx_merged_data@var.genes, npcs = 20, verbose = FALSE)
 
