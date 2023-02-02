@@ -102,7 +102,7 @@ data <- data %>%
     FindNeighbors(reduction = 'harmony', dims = 1:20) %>% 
     FindClusters(algorithm=4,resolution = 0.30 ,method = 'igraph') #Algorithm 4 is Leiden clustering
 
-#########At this pooint we can perform subclustering again but only for annotation, not to remove any barcodes#########
+#########At this point we can perform subclustering again but only for annotation, not to remove any barcodes#########
 #Pancreatic islet cell types have well established marker genes. Add metadata column for cell type annotations based on marker gene expression
 
 data@meta.data$cell_type <-  NA
