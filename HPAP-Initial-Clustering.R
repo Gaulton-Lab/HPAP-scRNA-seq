@@ -18,25 +18,25 @@ suppressMessages(library(SoupX))
 suppressMessages(library(Azimuth))
 
 ###Set up a reticulate in conda environment to run Python packages in R
-Sys.setenv(RETICULATE_PYTHON="~/.conda/envs/reticulate/bin/python")
-reticulate::use_python("~/.conda/envs/reticulate/bin/python")
-reticulate::use_condaenv("~/.conda/envs/reticulate")
+Sys.setenv(RETICULATE_PYTHON='~/.conda/envs/reticulate/bin/python')
+reticulate::use_python('~/.conda/envs/reticulate/bin/python')
+reticulate::use_condaenv('~/.conda/envs/reticulate')
 reticulate::py_module_available(module='leidenalg')
 reticulate::import('leidenalg')
 
 ###############################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
-
 #Run CellRanger on all individual samples, aligning to GRCh38 genome 
 #!/bin/bash
 ~/cellranger-6.0.1/cellranger count --id ${SAMPLE} --fastqs ~/hpap/rna/${SAMPLE}/Upenn_scRNAseq/fastq/ --sample ${SAMPLE} --transcriptome ~/refdata-gex-GRCh38-2020-A/ --localcores 24 --localmem 150 --disable-ui; done
 
-#Create list of sample directories where CellRanger outputs are stored
+#The following code will use Seurat to perform initial clustering of the data
+##Create list of sample directories where CellRanger outputs are stored
 samples <- c('HPAP-019','HPAP-020','HPAP-021','HPAP-022','HPAP-023','HPAP-024','HPAP-026','HPAP-027','HPAP-028','HPAP-029','HPAP-032','HPAP-034','HPAP-035','HPAP-036','HPAP-037','HPAP-038','HPAP-039','HPAP-040','HPAP-042','HPAP-043','HPAP-044','HPAP-045','HPAP-047','HPAP-049','HPAP-050','HPAP-051','HPAP-052','HPAP-053','HPAP-054','HPAP-055','HPAP-056','HPAP-057','HPAP-058','HPAP-059','HPAP-061','HPAP-063','HPAP-064','HPAP-065','HPAP-070','HPAP-071','HPAP-072','HPAP-074','HPAP-075','HPAP-077','HPAP-079','HPAP-080','HPAP-081','HPAP-082','HPAP-083','HPAP-084','HPAP-085','HPAP-087','HPAP-088','HPAP-090','HPAP-091','HPAP-092','HPAP-093','HPAP-099','HPAP-100','HPAP-101','HPAP-103','HPAP-104','HPAP-105','HPAP-106','HPAP-107','HPAP-108','HPAP-109')
 samples2 <- c('HPAP-019_10xscRNA_71783','HPAP-020_10xscRNA_73876','HPAP-021_10xscRNA_75162','HPAP-022_10xscRNA_75751','HPAP-023_10xscRNA_75798','HPAP-024_10xscRNA_75799','HPAP-026_10xscRNA_77407','HPAP-027_10xscRNA_78239','HPAP-028_10xscRNA_78241','HPAP-029_10xscRNA_78242','HPAP-032_10xscRNA_79863','HPAP-034_10xscRNA_81423','HPAP-035_10xscRNA_81832','HPAP-036_10xscRNA_81833','HPAP-037_10xscRNA_82543','HPAP-038_10xscRNA_84764','HPAP-039_10xscRNA_86672','HPAP-040_10xscRNA_86673','HPAP-042_10xscRNA_86674','HPAP-043_10xscRNA_86675','HPAP-044_10xscRNA_86676','HPAP-045_10xscRNA_86677','HPAP-047_10xscRNA_97169','HPAP-049_10xscRNA_97170','HPAP-050_10xscRNA_97171','HPAP-051_10xscRNA_97173','HPAP-052_10xscRNA_98611','HPAP-053_10xscRNA_98612','HPAP-054_10xscRNA_98613','HPAP-055_10xscRNA_98614','HPAP-056_10xscRNA_98615','HPAP-057_10xscRNA_98616','HPAP-058_10xscRNA_98617','HPAP-059_10xscRNA_98618','HPAP-061_99868','HPAP063_99870','HPAP064_99871','HPAP065_99872','HPAP070_99875','HPAP071_103407','HPAP072_103408','HPAP074_103409','HPAP075_103410','HPAP077_103411','HPAP079_103412','HPAP-080_103413','HPAP081_103414','HPAP082_103415','HPAP083_103416','HPAP-084_105149','HPAP085_103417','HPAP-087_103418','HPAP088_105150','HPAP-090_105151','HPAP091_105152','HPAP-092_105153','HPAP-093_105154','HPAP-099_106838','HPAP-100_106839','HPAP-101_106840','HPAP-103_106841','HPAP-104_107485','HPAP-105_107486','HPAP-106_107487','HPAP-107_109359','HPAP-108_109360','HPAP-109_109361')
 
 for (sample in samples){
     wd <- sprintf('~/hpap/rna/%s/Upenn_scRNAseq/cellranger/%s/outs/raw_feature_bc_matrix/', samples, samples2)
-    }
+}
 #Read in the raw data for each sample
 data <- list()
 for (x in wd){
