@@ -14,10 +14,8 @@ suppressMessages(library(ggpubr))
 suppressMessages(library(tidyverse))
 suppressMessages(library(GenomeInfoDb))
 suppressMessages(library(EnsDb.Hsapiens.v86))
-suppressMessages(library(ggplot2))
 suppressMessages(library(reticulate))
 suppressMessages(library(SoupX))
-suppressMessages(library(Azimuth))
 
 ###Set up a reticulate in conda environment to run Python packages in R
 Sys.setenv(RETICULATE_PYTHON='~/.conda/envs/reticulate/bin/python')
