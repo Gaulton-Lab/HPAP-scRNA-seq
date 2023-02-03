@@ -20,9 +20,9 @@ suppressMessages(library(SoupX))
 suppressMessages(library(Azimuth))
 
 ###Set up a reticulate in conda environment to run Python packages in R
-Sys.setenv(RETICULATE_PYTHON="~/.conda/envs/reticulate/bin/python")
-reticulate::use_python("~/.conda/envs/reticulate/bin/python")
-reticulate::use_condaenv("~/.conda/envs/reticulate")
+Sys.setenv(RETICULATE_PYTHON='~/.conda/envs/reticulate/bin/python')
+reticulate::use_python('~/.conda/envs/reticulate/bin/python')
+reticulate::use_condaenv('~/.conda/envs/reticulate')
 reticulate::py_module_available(module='leidenalg')
 reticulate::import('leidenalg')
 
