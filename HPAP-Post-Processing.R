@@ -27,7 +27,7 @@ reticulate::py_module_available(module='leidenalg')
 reticulate::import('leidenalg')
 
 ###############################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
-###Need to perform manual removal of remaining doublets, small donor-specific clusters, and subclustering if a single cluster has marker genes from two distinct cell types
+###Perform manual removal of remaining doublets, and perform subclustering if a single cluster has marker genes from two distinct cell types
 
 #Read in post-SoupX, post-Scrublet Seurat object
 data <- readRDS('~/hpap/hpap_SoupX_Scrublet.rds')
@@ -64,8 +64,8 @@ data_subcluster <- FindSubCluster1(data, cluster=sc.num, algorithm=4, resolution
 data_subset <- subset(data_subcluster, subset=seurat_clusters==sc.num)
 
 options(repr.plot.width=10, repr.plot.height=8)
-p1 <- DimPlot(data_subset, reduction='umap', group.by='sub.cluster', label=TRUE, label.size=6, repel=TRUE)
-p1
+DimPlot(data_subset, reduction='umap', group.by='sub.cluster', label=TRUE, label.size=6, repel=TRUE)
+
 
 #Pick marker genes that you are trying to separate in your subclustering
 marker.genes <- c('INS', 'GCG')
