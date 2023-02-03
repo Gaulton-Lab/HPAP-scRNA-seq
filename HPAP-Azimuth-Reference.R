@@ -1,4 +1,5 @@
 ###This script provides instructions for converting your Seurat object to be compatible as an Azimuth reference
+###See Azimuth reference format requirements here: https://github.com/satijalab/azimuth/wiki/Azimuth-Reference-Format
 
 #Load necessary packages
 suppressMessages(library(hdf5r))
