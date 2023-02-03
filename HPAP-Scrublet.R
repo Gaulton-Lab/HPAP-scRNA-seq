@@ -1,5 +1,5 @@
-#Note, perform this script after running SoupX to ensure use of counts corrected for ambient RNA
-##Failure to account for ambient RNA can result in false positive identification of doublets
+###Use this script to remove doublets. Perform this script after running SoupX to ensure use of counts corrected for ambient RNA
+###Failure to account for ambient RNA can result in false positive identification of doublets
 
 #Load necessary packages
 suppressMessages(library(hdf5r))
