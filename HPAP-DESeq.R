@@ -1,13 +1,13 @@
 #Load necessary packages
-suppressPackageStartupMessages(library(stringr))
-suppressPackageStartupMessages(library(parallel))
-suppressPackageStartupMessages(library(readr))
-suppressPackageStartupMessages(library(DESeq2))
-suppressPackageStartupMessages(library(beeswarm))
+suppressMessages(library(Seurat))
+suppressMessages(library(stringr))
+suppressMessages(library(parallel))
+suppressMessages(library(readr))
+suppressMessages(library(DESeq2))
+suppressMessages(library(beeswarm))
 suppressMessages(library(limma))
 suppressMessages(library(edgeR))
 suppressMessages(library(GenomicFeatures))
-suppressMessages(library(Seurat))
 suppressMessages(library(data.table))
 
 ########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
