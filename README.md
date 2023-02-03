@@ -7,18 +7,18 @@ Data and interactive web browsers can be found at www.isletgenomics.org
 
 <img src="https://github.com/Gaulton-Lab/HPAP-scRNA-seq/blob/56e78b18ccdc319b3d6767568526fe2e7bacf6f0/Images/CellxGene_UMAP.png" width="500" height="400" />
 
-### Step1: HPAP-Initial-Clustering.R 
-#### Runs CellRanger on raw fastq files, basic filtering, batch correction and initial clustering
+#### Step 1: HPAP-Initial-Clustering.R 
+Runs CellRanger on raw fastq files, basic filtering, batch correction and initial clustering
 
-### Step2: HPAP-SoupX.R 
-#### Runs SoupX on individual samples to remove ambient RNA
+### Step 2: HPAP-SoupX.R 
+Runs SoupX on individual samples to remove ambient RNA
 
-### Step3: HPAP-Scrublet.R 
-#### Runs Scrublet to model and remove dooublets from individual samples
+### Step 3: HPAP-Scrublet.R 
+Runs Scrublet to model and remove dooublets from individual samples
 
-### Step4: HPAP-Post-Processing.R 
-#### Clean up the data and perform final clustering
+### Step 4: HPAP-Post-Processing.R 
+Clean up the data and perform final clustering
 
-### Step5: HPAP-DESeq.R 
-#### Generates pseudo-bulk matrices for each cluster to perform differential expression analyses
+### Step 5: HPAP-DESeq.R 
+Generates pseudo-bulk matrices for each cluster to perform differential expression analyses
 
