@@ -7,7 +7,7 @@ Data and interactive web browsers can be found at www.isletgenomics.org
 
 <img src="https://github.com/Gaulton-Lab/HPAP-scRNA-seq/blob/56e78b18ccdc319b3d6767568526fe2e7bacf6f0/Images/CellxGene_UMAP.png" width="500" height="400" />
 
-#### Step 1: HPAP-Initial-Clustering.R 
+### Step 1: HPAP-Initial-Clustering.R 
 Runs CellRanger on raw fastq files, basic filtering, batch correction and initial clustering
 
 ### Step 2: HPAP-SoupX.R 
