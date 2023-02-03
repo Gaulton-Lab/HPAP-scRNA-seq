@@ -22,3 +22,5 @@ Clean up the data and perform final clustering
 ### Step 5: HPAP-DESeq.R 
 Generates pseudo-bulk matrices for each cluster to perform differential expression analyses
 
+### Bonus! HPAP-Azimuth-Reference.R 
+Instructions to format final Seurat object into an Azimuth reference
