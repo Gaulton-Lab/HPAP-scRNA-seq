@@ -65,7 +65,7 @@ for (x in wd){
     contam_frac_results0$ContaminationFraction <- contamination_fraction
     contam_frac_results <- rbind(contam_frac_results, contam_frac_results0) #This will output a table with calculated contamination fraction for each sample
     
-    out <- adjustCounts(sc, roundToInt=TRUE) #Stochastically adjusts counts while rounding to maintain overally contamination fraction while outputting integer counts
+    out <- adjustCounts(sc, roundToInt=TRUE) #Stochastically adjusts counts while rounding to maintain overall contamination fraction while outputting integer counts
 
     data2 <- CreateSeuratObject(out)
     data2[['percent.mt']] <- PercentageFeatureSet(data2, pattern = '^MT-')
