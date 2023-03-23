@@ -86,7 +86,11 @@ exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 
 #Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
 exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
-gene.info <- fread('~/publicdata/gencode_v38/gene_info_hg38_basic.tsv') #This file can be downloaded from Gencode
+
+gene.info <- rtracklayer::import('/nfs/lab/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
+gene.info <- as.data.frame(gene.info)
+gene.info <- gene.info[,c('gene_id', 'gene_name', 'gene_type', 'seqnames', 'start', 'end', 'strand', 'source', 'level')]
+colnames(gene.info) <- c('gene_id', 'gene_name', 'gene_type', 'chrom', 'start', 'end', 'strand', 'source', 'level')
 
 #Add the effective lengths to the original gene.info dataframe
 temp_df <- gene.info
