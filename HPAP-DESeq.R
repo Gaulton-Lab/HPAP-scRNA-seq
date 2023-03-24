@@ -80,13 +80,13 @@ for (cell.type in unique_cell_types){
 ###Step 2: Make TPM Matrices###
 #We want to normalize for gene size. Need to extract gene sizes from Gencode v38 publicly available annotations
 #Pull out gene exon info and calculate effective length
-gene_annotations_gtf_fp <- '~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf' #This file can be downloaded from Gencode
-suppressMessages(txdb <- makeTxDbFromGFF(gene_annotations_gtf_fp,format='gtf'))
+suppressMessages(txdb <- makeTxDbFromGFF('~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf',format='gtf')) #This gtffile can be downloaded from Gencode
 exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 
 #Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
-exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
+exonic.gene.sizes <- sum(width(GenomicRanges::reduce(exons.list.per.gene)))
 
+#These creates a separate gene info table so we can add gene names to exonic sizes later
 gene.info <- rtracklayer::import('/nfs/lab/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
 gene.info <- as.data.frame(gene.info)
 gene.info <- gene.info[,c('gene_id', 'gene_name', 'gene_type', 'seqnames', 'start', 'end', 'strand', 'source', 'level')]
@@ -97,12 +97,10 @@ temp_df <- gene.info
 rownames(temp_df) <- gene.info$gene_id
 temp_df2 <- as.data.frame(exonic.gene.sizes)
 temp_df2$gene_id <- rownames(temp_df2)
-
 new_df <- merge(temp_df,temp_df2, by='gene_id', all=TRUE)
 
 #Remove duplicate rows from gene info df
 fin.gene.info <- new_df[!duplicated(new_df$gene_name),]
-
 write.table(fin.gene.info, '~/publicdata/gencode_v38/gene_info_withExonicGeneSizes.tsv', quote=FALSE, col.names=TRUE, row.names=FALSE, sep='\t')
 
 #Now that we have extracted  gene sizes, can make our TPM matrices
