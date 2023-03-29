@@ -84,7 +84,7 @@ suppressMessages(txdb <- makeTxDbFromGFF('~/publicdata/gencode_v38/gencode.v38.a
 exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 
 #Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
-exonic.gene.sizes <- sum(width(GenomicRanges::reduce(exons.list.per.gene)))
+exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
 
 #These creates a separate gene info table so we can add gene names to exonic sizes later
 gene.info <- rtracklayer::import('/nfs/lab/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
@@ -114,9 +114,9 @@ make_tpm <- function(raw_counts, gene_sizes){
     tpm <- rpk
     for (i in 1:ncol(rpk)){
         tpm[,i] <- rpk[,i]/(sum(rpk[,i])/1e6)
-    }
+        }
     return(tpm)
-}
+    }
 
 for (x in files){
     cell <- cells[which(files == x)]
@@ -127,7 +127,7 @@ for (x in files){
 
     tpm_mat <- make_tpm(raw_counts, gene_sizes)
     write.table(tpm_mat, paste0('~/hpap/deseq/', cell , '_TPM_per_sample.txt'), sep='\t', quote=FALSE)
-}
+    }
 
 ###Step 3: Run DESeq###
 meta <- read.csv('~/hpap/Donor_Summary_127.csv') #This file can be downloaded from PANC-DB
