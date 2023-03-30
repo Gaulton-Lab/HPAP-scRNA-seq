@@ -99,7 +99,7 @@ soupx_merged_data$library <- substr(rownames(soupx_merged_data@meta.data),1,8)
 cond_t1d <- c('HPAP-020','HPAP-021','HPAP-023','HPAP-028','HPAP-032','HPAP-055','HPAP-064','HPAP-071','HPAP-084','HPAP-087')
 cond_t2d <- c('HPAP-051','HPAP-057','HPAP-058','HPAP-061','HPAP-065','HPAP-070','HPAP-079','HPAP-081','HPAP-083','HPAP-085','HPAP-088','HPAP-090','HPAP-091','HPAP-100','HPAP-106','HPAP-108', 'HPAP-109')
 aab <- c('HPAP-019', 'HPAP-024', 'HPAP-029', 'HPAP-038', 'HPAP-043', 'HPAP-045', 'HPAP-049', 'HPAP-050', 'HPAP-072', 'HPAP-092', 'HPAP-107')
-sex_F <- c('HPAP-022','HPAP-027','HPAP-036', 'HPAP-037','HPAP-039','HPAP-044','HPAP-045','HPAP-050','HPAP-051','HPAP-053','HPAP-054', 'HPAP-056','HPAP-057','HPAP-058','HPAP-061','HPAP-063', 'HPAP-074', 'HPAP-079','HPAP-081','HPAP-085','HPAP-090','HPAP-091','HPAP-093','HPAP-099','HPAP-101','HPAP-103','HPAP-105', 'HPAP-109')
+sex_F <- c('HPAP-022','HPAP-027','HPAP-036', 'HPAP-037','HPAP-039','HPAP-044','HPAP-045','HPAP-050','HPAP-051','HPAP-053','HPAP-054','HPAP-057','HPAP-058','HPAP-061','HPAP-063', 'HPAP-074', 'HPAP-079','HPAP-081','HPAP-085','HPAP-090','HPAP-091','HPAP-093','HPAP-099','HPAP-101','HPAP-103','HPAP-105', 'HPAP-109')
 penn <- c('HPAP-022','HPAP-027','HPAP-034','HPAP-035','HPAP-037','HPAP-040','HPAP-047','HPAP-051','HPAP-052','HPAP-053','HPAP-054','HPAP-055','HPAP-056','HPAP-057','HPAP-059','HPAP-061','HPAP-063','HPAP-064','HPAP-074','HPAP-075','HPAP-077','HPAP-083','HPAP-085','HPAP-099','HPAP-103','HPAP-104','HPAP-106')
 v2 <- c('HPAP-019','HPAP-020','HPAP-021','HPAP-022','HPAP-023','HPAP-024','HPAP-026','HPAP-027','HPAP-028','HPAP-029','HPAP-032','HPAP-034','HPAP-035','HPAP-036','HPAP-037')
 
@@ -118,7 +118,7 @@ soupx_merged_data@meta.data$tissue_source[soupx_merged_data@meta.data$library %i
 soupx_merged_data@meta.data$chemistry <- '10Xv3'
 soupx_merged_data@meta.data$chemistry[soupx_merged_data@meta.data$library %in% v2] <- '10Xv2'
 
-soupx_merged_data[["percent.mt"]] <- PercentageFeatureSet(soupx_merged_data, pattern = '^MT-')
+soupx_merged_data[['percent.mt']] <- PercentageFeatureSet(soupx_merged_data, pattern = '^MT-')
 
 #Set percent mitochondrial read threshold, log normalize data and find variable features
 soupx_merged_data <- subset(soupx_merged_data, subset = percent.mt < 15) #Keeping everything less than 15 percent mitochondrial reads
