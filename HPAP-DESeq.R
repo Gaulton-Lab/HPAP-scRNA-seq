@@ -87,7 +87,7 @@ exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
 
 #These creates a separate gene info table so we can add gene names to exonic sizes later
-gene.info <- rtracklayer::import('/nfs/lab/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
+gene.info <- rtracklayer::import('~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
 gene.info <- as.data.frame(gene.info)
 gene.info <- gene.info[,c('gene_id', 'gene_name', 'gene_type', 'seqnames', 'start', 'end', 'strand', 'source', 'level')]
 colnames(gene.info) <- c('gene_id', 'gene_name', 'gene_type', 'chrom', 'start', 'end', 'strand', 'source', 'level')
