@@ -37,7 +37,10 @@ reference_data <- AzimuthReference(
  refDR = 'pca',
  metadata = c('cell.type'), 
  dims = 1:50,
- k.param = 31)
+ k.param = 31
+ plotref='umap',
+ refAssay = 'SCT',
+ reference.version = '1.0.0')
  
 saveRDS(reference_data, '~/hpap/ref.Rds')
 SaveAnnoyIndex(reference_data[['refdr.annoy.neighbors']], '~/hpap/idx.annoy')
