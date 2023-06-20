@@ -53,14 +53,14 @@ get_per_sample_gex_SUMS <- function(cell.type, mtx.fp){
         
         #If only one barcode, this becomes a vector which is an issue
         if (typeof(counts.cut) == 'double'){
-            mean.counts <- counts.cut
+            sum.counts <- counts.cut
         #If there are no barcodes, this will return NA (just return 0 for everything)
         } else if(length(colnames(counts.cut)) == 0){
-            mean.counts <- rep(0,length(row.names(counts)))
+            sum.counts <- rep(0,length(row.names(counts)))
         } else {
-            mean.counts <- rowSums(counts.cut)
+            sum.counts <- rowSums(counts.cut)
         }
-        counts.df <- cbind(counts.df,as.data.frame(mean.counts))
+        counts.df <- cbind(counts.df,as.data.frame(sum.counts))
      }
     fin.counts.df <- counts.df[,-c(1)]
     colnames(fin.counts.df) <- samples
