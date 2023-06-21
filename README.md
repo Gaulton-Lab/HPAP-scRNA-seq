@@ -1,7 +1,7 @@
 # HPAP scRNA-seq Analysis Pipeline
 Here you can find all the code used to generate data and figures in our manuscript using publically available pancreatic islet scRNA-seq data from the Human Pancreas Analysis Program (HPAP).
 
-Data and interactive web browsers can be found at www.isletgenomics.org
+Raw data and interactive web browsers can be found at www.isletgenomics.org
 
 
 #### Please cite our pipelines at: Elgamal RM et al. A reference map of cell type-specific gene expression in pancreatic islets in physiology and disease. BioRxiv 2023. doi:https://doi.org/10.1101/2023.02.03.526994
@@ -15,7 +15,7 @@ Runs CellRanger on raw fastq files, basic filtering, batch correction and initia
 Runs SoupX on individual samples to remove ambient RNA
 
 ### Step 3: HPAP-Scrublet.R 
-Runs Scrublet to model and remove dooublets from individual samples
+Runs Scrublet to model and remove doublets from individual samples
 
 ### Step 4: HPAP-Post-Processing.R 
 Clean up the data and perform final clustering
