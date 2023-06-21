@@ -31,7 +31,7 @@ for (sample in samples){
 }
 
 #Write function that will save sample gene expression count matrices for each unique cell type
-##Note: since we ran SoupX with the roundToInt flag, counts are SoupX corrected but still integers for DESeq's negative binomial model
+##Note: Since we ran SoupX with the roundToInt flag, counts are SoupX corrected but still integers for DESeq's negative binomial model
 data_matrices <- data
 
 get_per_sample_gex_SUMS <- function(cell.type, mtx.fp){
@@ -86,7 +86,7 @@ exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 #Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
 exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
 
-#These creates a separate gene info table so we can add gene names to exonic sizes later
+#This creates a separate gene info table so we can add gene names to exonic sizes later
 gene.info <- rtracklayer::import('~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
 gene.info <- as.data.frame(gene.info)
 gene.info <- gene.info[,c('gene_id', 'gene_name', 'gene_type', 'seqnames', 'start', 'end', 'strand', 'source', 'level')]
