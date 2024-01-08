@@ -73,7 +73,7 @@ get_per_sample_gex_SUMS <- function(cell.type, mtx.fp){
 
 #Run function to make matrices
 for (cell.type in unique_cell_types){
-    fp = sprintf('~/hpap/deseq/%s_pseudobulk.txt',cell.type)
+    fp <- sprintf('~/hpap/deseq/%s_pseudobulk.txt',cell.type)
     get_per_sample_gex_SUMS(cell.type, fp)
 }
 
@@ -83,7 +83,7 @@ for (cell.type in unique_cell_types){
 suppressMessages(txdb <- makeTxDbFromGFF('~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf',format='gtf')) #This gtffile can be downloaded from Gencode
 exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 
-#Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
+#Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum them
 exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
 
 #This creates a separate gene info table so we can add gene names to exonic sizes later
