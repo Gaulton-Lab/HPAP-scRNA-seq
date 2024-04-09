@@ -38,10 +38,10 @@ for (sample in samples){
 #Read in the raw data for each sample
 data <- list()
 for (x in wd){
-    sample_name <- str_split_fixed(x, "/", n=13)[9]
+    sample_name <- str_split_fixed(x, '/', n=13)[9]
     hpap.data <- Read10X(data.dir = file.path(x))
     #Initialize the Seurat object with the raw (non-normalized data)
-    hpap <- CreateSeuratObject(counts = hpap.data, project = "HPAP", min.cells = 0, min.features = 500)
+    hpap <- CreateSeuratObject(counts = hpap.data, project = 'HPAP', min.cells = 0, min.features = 500)
     data[[sample_name]] <- hpap   
 }
 
@@ -54,7 +54,7 @@ merged_data$library <- substr(rownames(merged_data@meta.data),1,8)
 cond_t1d <- c('HPAP-020','HPAP-021','HPAP-023','HPAP-028','HPAP-032','HPAP-055','HPAP-064','HPAP-071','HPAP-084','HPAP-087')
 cond_t2d <- c('HPAP-051','HPAP-057','HPAP-058','HPAP-061','HPAP-065','HPAP-070','HPAP-079','HPAP-081','HPAP-083','HPAP-085','HPAP-088','HPAP-090','HPAP-091','HPAP-100','HPAP-106','HPAP-108', 'HPAP-109')
 aab <- c('HPAP-019', 'HPAP-024', 'HPAP-029', 'HPAP-038', 'HPAP-043', 'HPAP-045', 'HPAP-049', 'HPAP-050', 'HPAP-072', 'HPAP-092', 'HPAP-107')
-sex_F <- c('HPAP-022','HPAP-027','HPAP-036', 'HPAP-037','HPAP-039','HPAP-044','HPAP-045','HPAP-050','HPAP-051','HPAP-053','HPAP-054','HPAP-057','HPAP-058','HPAP-061','HPAP-063', 'HPAP-074', 'HPAP-079','HPAP-081','HPAP-085','HPAP-090','HPAP-091','HPAP-093','HPAP-099','HPAP-101','HPAP-103','HPAP-105', 'HPAP-109')
+sex_F <- c('HPAP-021','HPAP-022','HPAP-027','HPAP-036', 'HPAP-037','HPAP-039','HPAP-044','HPAP-045','HPAP-050','HPAP-051','HPAP-053','HPAP-054','HPAP-057','HPAP-058','HPAP-061','HPAP-063', 'HPAP-074', 'HPAP-079','HPAP-081','HPAP-085','HPAP-090','HPAP-091','HPAP-093','HPAP-099','HPAP-101','HPAP-103','HPAP-105', 'HPAP-109')
 penn <- c('HPAP-022','HPAP-027','HPAP-034','HPAP-035','HPAP-037','HPAP-040','HPAP-047','HPAP-051','HPAP-052','HPAP-053','HPAP-054','HPAP-055','HPAP-056','HPAP-057','HPAP-059','HPAP-061','HPAP-063','HPAP-064','HPAP-074','HPAP-075','HPAP-077','HPAP-083','HPAP-085','HPAP-099','HPAP-103','HPAP-104','HPAP-106')
 v2 <- c('HPAP-019','HPAP-020','HPAP-021','HPAP-022','HPAP-023','HPAP-024','HPAP-026','HPAP-027','HPAP-028','HPAP-029','HPAP-032','HPAP-034','HPAP-035','HPAP-036','HPAP-037')
 
@@ -86,8 +86,8 @@ VlnPlot(merged_data, features = c('nFeature_RNA', 'nCount_RNA','percent.mt'), nc
 
 #Perform basic threshold filtering and log normalization
 merged_data <- subset(merged_data, subset = percent.mt < 15) #Keeping every cell with less than 15 percent mitochondrial reads
-merged_data <- NormalizeData(merged_data, normalization.method = "LogNormalize", scale.factor = 10000)
-merged_data <- FindVariableFeatures(merged_data, selection.method = "vst", nfeatures = 2000)
+merged_data <- NormalizeData(merged_data, normalization.method = 'LogNormalize', scale.factor = 10000)
+merged_data <- FindVariableFeatures(merged_data, selection.method = 'vst', nfeatures = 2000)
 merged_data <- ScaleData(merged_data, verbose = FALSE) %>% 
     RunPCA(pc.genes = merged_data@var.genes, npcs = 20, verbose = FALSE)
 
@@ -96,13 +96,13 @@ merged_data <- RunHarmony(merged_data,c('library','tissue_source','chemistry'), 
 
 #Can now use harmony as a reduction in running UMAP and finding neighbors
 merged_data <- merged_data %>% 
-    RunUMAP(reduction = "harmony", dims = 1:20) %>% 
-    FindNeighbors(reduction = "harmony", dims = 1:20) %>% 
-    FindClusters(algorithm=4,resolution = 0.5 ,method = "igraph") #Algorithm 4 is Leiden clustering
+    RunUMAP(reduction = 'harmony', dims = 1:20) %>% 
+    FindNeighbors(reduction = 'harmony', dims = 1:20) %>% 
+    FindClusters(algorithm=4,resolution = 0.5 ,method = 'igraph') #Algorithm 4 is Leiden clustering
 
 #Plot UMAP
 options(repr.plot.height = 7, repr.plot.width = 8)
-DimPlot(merged_data, reduction = "umap", label = TRUE, pt.size = .1)
+DimPlot(merged_data, reduction = 'umap', label = TRUE, pt.size = .1)
 
 #Plot your favorite marker genes
 marker.genes <- c('INS','IAPP', #Beta
