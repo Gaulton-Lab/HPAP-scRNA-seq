@@ -84,7 +84,7 @@ suppressMessages(txdb <- makeTxDbFromGFF('~/publicdata/gencode_v38/gencode.v38.a
 exons.list.per.gene <- exonsBy(txdb,by='gene') #Collect the exons per gene_id
 
 #Reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum them
-exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
+exonic.gene.sizes <- sum(width(GenomicRanges::reduce(exons.list.per.gene)))
 
 #This creates a separate gene info table so we can add gene names to exonic sizes later
 gene.info <- rtracklayer::import('~/publicdata/gencode_v38/gencode.v38.annotation_comprehensive_CHR.gtf')
